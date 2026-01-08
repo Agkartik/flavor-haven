@@ -14,7 +14,7 @@ const menuData = [
     { id: 12, name: 'Fresh Juice', category: 'Beverages', price: 180, desc: 'Fresh orange, apple, pomegranate', image: 'Assests/Fresh Juice.jpg' },
     { id: 13, name: 'Soft Drinks', category: 'Beverages', price: 100, desc: 'Coke, Sprite, Fanta', image: 'Assests/Soft Drinks.jpg' },
     { id: 14, name: 'Tikka Masala', category: 'Main Course', price: 480, desc: 'Spiced chicken in tomato cream', image: 'Assests/Tikka Masala.jpg' },
-    { id: 15, name: 'Samosa', category: 'Appetizers', price: 220, desc: 'Soft naan with paneer stuffing', image: 'Assests/Samosa.jpg' }
+    { id: 15, name: 'Samosa', category: 'Appetizers', price: 120, desc: 'Samosa with paneer stuffing', image: 'Assests/Samosa.jpg' }
 ];
 
 // Rewards Data
