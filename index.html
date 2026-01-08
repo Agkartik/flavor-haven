@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Flavor Haven - Fast & Delicious Food Delivery. Order from 15+ restaurants, track orders in real-time, earn loyalty points, and enjoy exclusive rewards. Quick delivery to your doorstep!">
+    <meta name="keywords" content="food delivery, online food ordering, restaurant delivery, fast food delivery, Flavor Haven, food near me">
+    <meta property="og:title" content="Flavor Haven - Fast Food Delivery App">
+    <meta property="og:description" content="Order delicious food with loyalty rewards. Fast delivery, real-time tracking, and exclusive discounts!">
+    <meta property="og:image" content="https://your-domain.com/og-image.jpg">
+    
+    <title>Flavor Haven - Food Delivery App | Fast & Fresh</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header>
+        <nav>
+            <a href="#" class="logo" onclick="showHome()">🍽️ Flavor Haven</a>
+            <ul class="nav-center">
+                <li><a onclick="showMenu()">Menu</a></li>
+                <li><a onclick="showAbout()">About</a></li>
+                <li><a href="tel:+919876543210">📞 +91 98765 43210</a></li>
+            </ul>
+            <div class="nav-right">
+                <button class="btn-nav btn-secondary" id="cartCountBtn" onclick="toggleCart()" style="position: relative;">
+                    🛒 Cart <span style="position: absolute; top: -8px; right: -8px; background: var(--color-success); color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;" id="cartCount">0</span>
+                </button>
+                <button class="btn-nav btn-secondary" id="rewardsBtn" onclick="showRewards()" style="display: none;">🎁 Rewards</button>
+                <button class="btn-nav btn-secondary" id="myOrdersBtn" onclick="showOrders()" style="display: none;">📋 Orders</button>
+                <button class="btn-nav btn-secondary" id="logoutBtn" onclick="logout()" style="display: none;">🚪 Logout</button>
+                <button class="btn-nav btn-primary" id="loginBtn" onclick="showLoginModal()">👤 Login</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HOME PAGE -->
+    <div class="page active" id="homePage">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Flavor Haven</h1>
+                <p>Experience the finest culinary delights delivered to your doorstep</p>
+                <div class="hero-buttons">
+                    <button class="btn-large primary" onclick="showMenu()">🍽️ Browse Menu</button>
+                    <button class="btn-large primary" style="background: rgba(255,255,255,0.2); border: 2px solid white;" onclick="showAbout()">ℹ️ Learn More</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <div class="section-header">
+                <h2>Why Choose Flavor Haven?</h2>
+                <p>Premium quality food, fast delivery, and exceptional service</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Super Fast Delivery</h3>
+                    <p>Get your order delivered in 30-45 minutes or less</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🍳</div>
+                    <h3>Premium Ingredients</h3>
+                    <p>Fresh, high-quality ingredients sourced daily</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Best Prices</h3>
+                    <p>Competitive pricing with frequent discounts</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure Payments</h3>
+                    <p>Safe and secure payment options available</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- MENU PAGE -->
+    <div class="page" id="menuPage">
+        <div class="menu-header">
+            <h1>Our Delicious Menu</h1>
+            <p>Discover our wide variety of dishes crafted with care</p>
+        </div>
+
+        <div class="menu-controls">
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 Search dishes..." onkeyup="filterMenu()">
+                </div>
+                <div class="filter-box">
+                    <button class="filter-btn active" onclick="filterByCategory('All')">All</button>
+                    <button class="filter-btn" onclick="filterByCategory('Appetizers')">Appetizers</button>
+                    <button class="filter-btn" onclick="filterByCategory('Main Course')">Main</button>
+                    <button class="filter-btn" onclick="filterByCategory('Desserts')">Desserts</button>
+                    <button class="filter-btn" onclick="filterByCategory('Beverages')">Drinks</button>
+                </div>
+            </div>
+
+            <div class="menu-items" id="menuItems"></div>
+        </div>
+    </div>
+
+    <!-- REWARDS & LOYALTY PAGE -->
+    <div class="page" id="rewardsPage">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+            <section class="loyalty-section">
+                <div class="loyalty-header">
+                    <h2>🎯 Loyalty & Rewards Program</h2>
+                    <p>Earn points on every order and unlock exclusive benefits</p>
+                </div>
+
+                <div class="loyalty-container">
+                    <div class="loyalty-card">
+                        <h3>💎 Your Loyalty Profile</h3>
+                        <div class="points-display" id="pointsDisplay">0</div>
+                        <p style="margin-bottom: 1rem;">Total Points Earned</p>
+                        <div class="tier-badge" id="tierBadge">🥉 Bronze Member</div>
+                        <p style="font-size: 0.9rem; margin-top: 1rem; opacity: 0.9;">Earn 10 points per ₹100 spent</p>
+                        <div style="margin-top: 1.5rem; background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 8px;">
+                            <p style="font-size: 0.85rem; margin-bottom: 0.5rem;">📈 Next Tier Progress</p>
+                            <div style="height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden;">
+                                <div id="tierProgress" style="height: 100%; background: rgba(255,255,255,0.5); width: 0%; transition: width 0.3s;"></div>
+                            </div>
+                            <p style="font-size: 0.8rem; margin-top: 0.5rem;" id="tierInfo">Earn 1,000 points to reach Silver!</p>
+                        </div>
+                    </div>
+
+                    <div class="loyalty-card">
+                        <h3>🎡 Spin the Wheel!</h3>
+                        <p style="font-size: 0.9rem; margin-bottom: 1rem;">Spin once per day for amazing rewards</p>
+                        <div class="spin-wheel-container">
+                            <div class="spin-wheel" id="spinWheel" onclick="spinWheel()">🎁</div>
+                            <button class="spin-btn" id="spinBtn" onclick="spinWheel()">SPIN NOW</button>
+                            <p style="font-size: 0.85rem; margin-top: 0.5rem;" id="spinStatus">Ready to spin!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recommendations-section">
+                <h3>🤖 AI-Powered Recommendations</h3>
+                <p style="color: #666; margin-bottom: 1.5rem;">Based on your order history, we think you'll love these dishes:</p>
+                <div class="recommendation-cards" id="recommendationsContainer">
+                    <p style="grid-column: 1/-1; color: #999;">Place your first order to get personalized recommendations!</p>
+                </div>
+            </section>
+
+            <section style="margin-top: 3rem; padding: 2rem; background: var(--color-light); border-radius: 12px;">
+                <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.3rem;">🏆 Membership Tiers</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🥉</div>
+                        <h3>Bronze</h3>
+                        <p><strong>0 - 999 pts</strong></p>
+                        <p style="font-size: 0.9rem;">Get started with us</p>
+                        <p style="color: var(--color-primary); margin-top: 0.5rem;">0% Discount</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🥈</div>
+                        <h3>Silver</h3>
+                        <p><strong>1,000 - 2,499 pts</strong></p>
+                        <p style="font-size: 0.9rem;">Frequent orderer</p>
+                        <p style="color: var(--color-primary); margin-top: 0.5rem;">5% Discount</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🥇</div>
+                        <h3>Gold</h3>
+                        <p><strong>2,500 - 4,999 pts</strong></p>
+                        <p style="font-size: 0.9rem;">Loyal customer</p>
+                        <p style="color: var(--color-primary); margin-top: 0.5rem;">10% Discount</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💎</div>
+                        <h3>Platinum</h3>
+                        <p><strong>5,000 - 9,999 pts</strong></p>
+                        <p style="font-size: 0.9rem;">VIP customer</p>
+                        <p style="color: var(--color-primary); margin-top: 0.5rem;">15% Discount</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👑</div>
+                        <h3>VIP Elite</h3>
+                        <p><strong>10,000+ pts</strong></p>
+                        <p style="font-size: 0.9rem;">Our most valued</p>
+                        <p style="color: var(--color-primary); margin-top: 0.5rem;">20% Discount</p>
+                    </div>
+                </div>
+            </section>
+
+            <section style="margin-top: 3rem; padding: 2rem; background: var(--color-light); border-radius: 12px;">
+                <h3 style="color: var(--color-primary); margin-bottom: 1.5rem; font-size: 1.3rem;">🎁 Redeem Your Points</h3>
+                <p style="color: #666; margin-bottom: 1.5rem;">Convert your points into exclusive rewards:</p>
+                <div id="rewardsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;"></div>
+            </section>
+        </div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div class="page" id="aboutPage">
+        <div class="about-header">
+            <h1>About Flavor Haven</h1>
+            <p>Your premier online dining destination</p>
+        </div>
+
+        <div class="about-content">
+            <div class="about-section">
+                <h2>🏆 Our Story</h2>
+                <p>Flavor Haven was founded with a simple mission: to bring the finest culinary experiences to your home. What started as a small neighborhood restaurant has grown into a beloved online food delivery service, serving thousands of happy customers daily.</p>
+            </div>
+
+            <div class="about-section">
+                <h2>🌟 Our Mission</h2>
+                <p><strong>To deliver happiness through exceptional food and service.</strong></p>
+                <ul style="margin-left: 2rem; line-height: 2;">
+                    <li>✓ Using only the freshest, highest-quality ingredients</li>
+                    <li>✓ Preparing each dish with care and attention to detail</li>
+                    <li>✓ Delivering orders quickly and professionally</li>
+                    <li>✓ Providing outstanding customer service 24/7</li>
+                </ul>
+            </div>
+
+                    <div class="about-section">
+            <h2>What Our Customers Say</h2>
+            <p>Thousands of food lovers across Bhopal trust Flavor Haven for fast, fresh, and reliable deliveries.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Aditi Sharma</h3>
+                    <p>"Delivery is always on time and the food quality is consistently great. My go-to app for weekend cravings!"</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Rahul Verma</h3>
+                    <p>"Loyalty points and discounts actually make a difference. I’ve saved a lot while ordering regularly."</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Sneha Kulkarni</h3>
+                    <p>"Super clean UI, easy checkout, and real-time order tracking. Feels like a premium food delivery app."</p>
+                </div>
+            </div>
+        </div>
+
+
+            <div class="about-section">
+                <h2>📞 Contact & Location</h2>
+                <p><strong>Flavor Haven Restaurant</strong></p>
+                <p>📍 123 Gourmet Street, Food District<br>
+                Bhopal, Madhya Pradesh 462001, India</p>
+                <p>📞 +91 98765 43210<br>
+                📧 hello@flavorhaven.com<br>
+                🕒 Open: 11:00 AM - 11:00 PM Daily</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MY ORDERS PAGE -->
+    <div class="page" id="ordersPage">
+        <div class="orders-header">
+            <h1>📋 My Orders</h1>
+            <p>Track your orders and manage your account</p>
+        </div>
+
+        <div class="orders-page">
+            <div class="orders-filters">
+                <button class="status-filter active" onclick="filterOrdersByStatus('All')">All Orders</button>
+                <button class="status-filter" onclick="filterOrdersByStatus('confirmed')">Confirmed</button>
+                <button class="status-filter" onclick="filterOrdersByStatus('preparing')">Preparing</button>
+                <button class="status-filter" onclick="filterOrdersByStatus('on-the-way')">On the Way</button>
+                <button class="status-filter" onclick="filterOrdersByStatus('delivered')">Delivered</button>
+            </div>
+
+            <div id="ordersContainer">
+                <div class="no-orders">
+                    <h3>No Orders Yet</h3>
+                    <p>Start ordering delicious food now!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT PAGE -->
+    <div class="page" id="checkoutPage">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+            <h1 style="color: var(--color-text); margin-bottom: 2rem;">Complete Your Order</h1>
+            
+            <div class="checkout-container">
+                <div class="checkout-form">
+                    <h2>Delivery Details</h2>
+
+                    <div class="form-section">
+                        <h3>📍 Delivery Address</h3>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="phoneNumber" placeholder="Enter your phone number">
+                        </div>
+                        <div class="form-group">
+                            <label>Street Address</label>
+                            <input type="text" id="streetAddress" placeholder="e.g., 123 Main Street">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" id="city" placeholder="e.g., Bhopal" value="Bhopal">
+                            </div>
+                            <div class="form-group">
+                                <label>Postal Code</label>
+                                <input type="text" id="postalCode" placeholder="e.g., 462001">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>💳 Payment Method</h3>
+                        
+                        <div class="payment-methods-container">
+                            <label class="payment-method-card selected" onclick="selectPaymentMethod('card')">
+                                <input type="radio" name="paymentMethod" value="card" class="payment-radio" checked>
+                                <div class="payment-method-content">
+                                    <span class="payment-icon">💳</span>
+                                    <div>
+                                        <div class="payment-name">Credit/Debit Card</div>
+                                        <div class="payment-desc">Visa, Mastercard</div>
+                                    </div>
+                                </div>
+                                <div class="payment-checkmark">✓</div>
+                            </label>
+
+                            <label class="payment-method-card" onclick="selectPaymentMethod('upi')">
+                                <input type="radio" name="paymentMethod" value="upi" class="payment-radio">
+                                <div class="payment-method-content">
+                                    <span class="payment-icon">📱</span>
+                                    <div>
+                                        <div class="payment-name">UPI Payment</div>
+                                        <div class="payment-desc">Google Pay, PhonePe</div>
+                                    </div>
+                                </div>
+                                <div class="payment-checkmark">✓</div>
+                            </label>
+
+                            <label class="payment-method-card" onclick="selectPaymentMethod('cod')">
+                                <input type="radio" name="paymentMethod" value="cod" class="payment-radio">
+                                <div class="payment-method-content">
+                                    <span class="payment-icon">💵</span>
+                                    <div>
+                                        <div class="payment-name">Cash on Delivery</div>
+                                        <div class="payment-desc">Pay at delivery</div>
+                                    </div>
+                                </div>
+                                <div class="payment-checkmark">✓</div>
+                            </label>
+                        </div>
+
+                        <div id="cardPayment" class="payment-form-wrapper active-payment-form">
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Expiry Date</label>
+                                    <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="text" id="cardCvv" placeholder="123" maxlength="3">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="upiPayment" class="payment-form-wrapper">
+                            <div class="form-group">
+                                <label>UPI ID</label>
+                                <input type="text" id="upiId" placeholder="yourname@upi">
+                            </div>
+                            <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">You'll be redirected to your UPI app to complete payment.</p>
+                        </div>
+
+                        <div id="codPayment" class="payment-form-wrapper">
+                            <p style="text-align: center; color: #666;">You can pay in cash when the delivery agent arrives.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-summary">
+                    <h3>Order Summary</h3>
+                    <div id="checkoutItems"></div>
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span id="checkoutSubtotal">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Delivery Fee:</span>
+                        <span>₹40</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Discount:</span>
+                        <span id="checkoutDiscount">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Tax (5%):</span>
+                        <span id="checkoutTax">₹0</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total:</span>
+                        <span id="checkoutTotal">₹0</span>
+                    </div>
+                    <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>🛒 Your Cart</h3>
+            <button class="cart-close" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItemsList">
+            <div class="empty-cart">Your cart is empty</div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cartSubtotal">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery:</span>
+                    <span>₹40</span>
+                </div>
+                <div class="summary-row">
+                    <span>Discount:</span>
+                    <span id="cartDiscount">₹0</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="cartTotal">₹0</span>
+                </div>
+            </div>
+            <button class="checkout-btn" id="checkoutCartBtn" onclick="goToCheckout()" disabled>Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-card">
+            <h2 id="authTitle">Login</h2>
+            <form class="auth-form" id="authForm">
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label>Full Name</label>
+                    <input type="text" id="authName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="authEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" placeholder="Enter your password">
+                </div>
+                <button type="button" class="auth-btn" onclick="handleAuth()">Login</button>
+                <div class="auth-toggle">
+                    Don't have an account? <a onclick="toggleAuthMode()">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-icon">✅</div>
+        <h2>Order Placed Successfully!</h2>
+        <p id="successMessage">Your order has been confirmed!</p>
+        <p style="color: #999; font-size: 0.95rem;">Order ID: <strong id="successOrderId"></strong></p>
+        <button class="btn-nav btn-primary" style="width: 100%; margin-top: 1rem;" onclick="closeSuccessModal()">View Order</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Flavor Haven</h3>
+                <p>Your premier online food delivery. Fresh ingredients, quality preparation, fast delivery.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a onclick="showHome()">Home</a></li>
+                    <li><a onclick="showMenu()">Menu</a></li>
+                    <li><a onclick="showAbout()">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>📞 +91 98765 43210<br>
+                📧 hello@flavorhaven.com<br>
+                🕒 11:00 AM - 11:00 PM</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Flavor Haven. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
